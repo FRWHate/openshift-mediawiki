@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Хост: localhost
--- Время создания: Окт 02 2015 г., 20:31
--- Версия сервера: 5.5.44-0ubuntu0.14.04.1
--- Версия PHP: 5.5.9-1ubuntu4.11
+-- Время создания: Янв 13 2016 г., 22:15
+-- Версия сервера: 5.5.46-0ubuntu0.14.04.2
+-- Версия PHP: 5.5.9-1ubuntu4.14
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- База данных: `mediawiki`
+-- База данных: `mw`
 --
 
 -- --------------------------------------------------------
@@ -217,7 +217,7 @@ CREATE TABLE IF NOT EXISTS `imagelinks` (
   `il_to` varbinary(255) NOT NULL DEFAULT '',
   UNIQUE KEY `il_from` (`il_from`,`il_to`),
   KEY `il_to` (`il_to`,`il_from`),
-  KEY `il_backlinks_namespace` (`il_to`,`il_from_namespace`,`il_from`)
+  KEY `il_backlinks_namespace` (`il_from_namespace`,`il_to`,`il_from`)
 ) ENGINE=InnoDB DEFAULT CHARSET=binary;
 
 -- --------------------------------------------------------
@@ -287,7 +287,6 @@ INSERT INTO `interwiki` (`iw_prefix`, `iw_url`, `iw_api`, `iw_wikiid`, `iw_local
 ('seattlewireless', 0x687474703a2f2f73656174746c65776972656c6573732e6e65742f2431, '', '', 0, 0),
 ('senseislibrary', 0x687474703a2f2f73656e736569732e786d702e6e65742f3f2431, '', '', 0, 0),
 ('shoutwiki', 0x687474703a2f2f7777772e73686f757477696b692e636f6d2f77696b692f2431, 0x687474703a2f2f7777772e73686f757477696b692e636f6d2f772f6170692e706870, '', 0, 0),
-('sourceforge', 0x687474703a2f2f736f75726365666f7267652e6e65742f2431, '', '', 0, 0),
 ('sourcewatch', 0x687474703a2f2f7777772e736f7572636577617463682e6f72672f696e6465782e7068703f7469746c653d2431, 0x687474703a2f2f7777772e736f7572636577617463682e6f72672f6170692e706870, '', 0, 0),
 ('squeak', 0x687474703a2f2f77696b692e73717565616b2e6f72672f73717565616b2f2431, '', '', 0, 0),
 ('tejo', 0x687474703a2f2f7777772e74656a6f2e6f72672f76696b696f2f2431, '', '', 0, 0),
@@ -390,15 +389,7 @@ CREATE TABLE IF NOT EXISTS `job` (
   KEY `job_cmd_token_id` (`job_cmd`,`job_token`,`job_id`),
   KEY `job_cmd` (`job_cmd`,`job_namespace`,`job_title`,`job_params`(128)),
   KEY `job_timestamp` (`job_timestamp`)
-) ENGINE=InnoDB  DEFAULT CHARSET=binary AUTO_INCREMENT=3 ;
-
---
--- Дамп данных таблицы `job`
---
-
-INSERT INTO `job` (`job_id`, `job_cmd`, `job_namespace`, `job_title`, `job_timestamp`, `job_params`, `job_random`, `job_attempts`, `job_token`, `job_token_timestamp`, `job_sha1`) VALUES
-(1, 'recentChangesUpdate', -1, 'RecentChanges', '20151002172846', 0x613a313a7b733a343a2274797065223b733a353a227075726765223b7d, 2143697184, 0, '', NULL, '8ferf1wspb3h3lzdb9i3fqnhvidfu9q'),
-(2, 'recentChangesUpdate', -1, 'RecentChanges', '20151002172846', 0x613a313a7b733a343a2274797065223b733a31313a226361636865557064617465223b7d, 955733599, 0, '', NULL, 't0ui7t0cg0b9prp29q7plzaevrijg70');
+) ENGINE=InnoDB DEFAULT CHARSET=binary AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -530,8 +521,8 @@ CREATE TABLE IF NOT EXISTS `objectcache` (
 --
 
 INSERT INTO `objectcache` (`keyname`, `value`, `exptime`) VALUES
-('mediawiki:pcache:idhash:1-0!*!*!*!*!*!*', 0xbd57e96edb4610ce6f3dc58645d003917848f241c90202d7895df8506325f969acc991b435b94bec2e2dab41803e429fb14fd2d9e552a62807489a22f425ceb5dfcccee5ab388c626f4aa5027955eaa2d45e3c08e28f2a1ec65e3e8307ed8d541cee45fdd81b1793b1d252f0c5e40252463fb03b469654915b004e549924a0d4bcccb235615c699a6590f6c6be53e98c7dd42f26c782ab32d3442f818c2991901d795ccc459689954734950bd047decd6d46f99d47928c2a75e4210e909c66441b446429617ee4f97e0e9af656082337787a422e7cf3e69f4256c4789006ae95377987cefda8c89b92a530f6e984cc854488f83ba79a094ef0bb548c2f2c2863812831d72b2aa1676177c6cb087d2f28af01e5abee12689a310e1e61e991f706b4460b37e8b7d4907a1347208e807140f5c9385fc588552b48ecc9055dc0917741192753fce811c738f2c2274c6c2b4fc63ec2ea8ccb6c32ced8c444f3ebc2b75aad7a3672c6e5c7e85d1790309ac517eb73ca1725c2f22f282f9182219db345296dd46e54050f03bc4527359d644c6913efb18ff03adf09e3eb57bf7b8dfcc4d75d08df90744bad0b15fbbef14db5722fa72ccb29b73c935efe067897722e4a9e40131aa200aa80183573cddf375ce722a178a2bdb21f6692729555d72a418952622d7b132703e411b4299d35f249e60c6d108f7d4cc44e67fcbcdb259d4b584da7e851ce34fa5908a93bc7d3774463b4b0d4502d26412f080e4cbe0b9eaace5b30beb4d8871bf6148d48611a0c9e7fcf14c37a205ca440128cab8e49df0f03fb6c8b2e8003a6654bf8e0515828fdcf5f7fc30316678a3d21c94a1453ec4f83c08f82c3fd701891dbb506d599415e608c80e08d9439b696cfc89db2c5129426d6a832159142a1973189fc41d039792800a9f780b56fba2e99635ed8ba71e00203aed3ed6e62692f078159538f466db0aad8929f5ebcccd54bbcac4cbdd40ee6cf1db483417c41f0311f02629f907449570beccf8d43aee93d18ff6b50094d6c2bd44b72076bb249a9b8b09c98a5d8f89771d80d9efff2f8454c100d2eec587941a2201c228628dc8f0e0643cb94602e0fd1b394841d6200d80133c06953a7e639e377ca1bd118e7d027e485c83b46871642326833ce78ca12aa856c320233bb98cea01e608771a3c7e2fb9e39ae758c5572b16bd2a306fd2c6d70f6cdf1395a6c4a1f20f135cbe01aa84c965785b9d926df387ae26a77836068066e1f417ee9481bb1384437f6fbf1ffd8c69dd1e1e03f19357dd759d84358dfda276b0f0fbe0ecc1774356bd95cc5d0a60f5e8531f654d26113bbae46ad37ba8d8391d339c535e20996c99f4bf1c6ac3d72bd453dc54de10ccbb261dfa4c98548cb0cdac95151af13c90adde4f51f797abdad36dcb02eb0ebb512d2e8fda6aa2b7f4f653bb3aba5ef5488a6f79889f9072a7995164daa73da52c3f8234327293af3d17aa44592c13d649b4c8a3df78e87c55e64fea28b766972c16cad38ae367999df82746aa15799623c8587260df1cca5c8b529f44691dfd4456e626f3ab298cf31c72da8fd7e7500e5c952c81688cdee36fa5457f2096e5bcee599b803e3f7ad75cde6c7548a02a4de6a4a466b76757c3abb3837e611420d053b926b8c75c7dbee8f5e6d16d54f38bdcd0c92eab408213f6b2ee9cf4cdf8387a9c858b26e9cd30f76045fd9b51cd29d56141decc89ac66487cbaf54d347c927ac9e9bc9fed60e9f5ad666417868ee1779d560ea26288d6ebb2bb423df7c8e826db115564d4beed0738e37e58ac2cd7e33cdad2f5195842ceedba4c39f6ab28f9c87dbda9b756057ff6057bfdf6fe9e3b2506d0a6e5130f37fcb48e08cb885c01a89b68dd4e3b95e22bec4463b0c9b25c02e165bda91d31e541e0c7614abe5a35e3aeccef1e4f1a1898133d1ba7cdcb0ee11f93126dfdd1f34b9c3daa9fb5db49b2aaf33ba68779d77cd84bc1c5565f31ea4b20dd5e640d8dbeb0d36b5736cb68e99cb90cfd44e54cbe18ac54c0bbeb4ffbad6d4b76ef5384bdd08f817, '2015-10-03 17:28:45'),
-('mediawiki:pcache:idoptions:1', 0x458dc10ac2301044ff653fa0ec8624c6c9513c782a887a2f36600ed5d215514affdd4428de86f78699165bd0aebbded2290f89e0302bc48086b3a6be1d9ff971578a1d18f3a208455cd2a48552d4d226697c636b162eeebf548905191627cc46362658f7a366ededdf639e3e143382b7ccd5f9d51dd32bd797435fbdc4e50b, '2015-10-03 17:28:45');
+('mw:pcache:idhash:1-0!*!*!*!*!*!*', 0xbd56eb6edb3614ee6f3d05ab61d8057524d94ee2c88e81224d9b0c49e33549fb3360a4639b0b450a2415c72b0aec11f68c7b921d529423db29d0ae43dda68dcf8ddfb99f8b34e9a6e1842a0deaa2326565c2b41fa71f75ba9b86c5153c9870a8d3646fb09f86a3723cd24649311b9f43cee80776c7c89c6a720b2088aeb20cb49e569c2f0913da50ce21df19455e251845a85f8e8fa4d01537c4cc818c2851c00f4321a79273b90889a16a06e630bcb9e554dc8524e354ebc3107180129413631191b982e96118450518bab3401885c5b323d52cb2dfa213e0658a0f19104687e36b74ee274dde542c875144c7642a1542c47f0b6a981404ff569a899903652d102da7664115ec38d8c168de45df4b2a1a40c5a233079a732620242c3f0cdf803168e106fd5606f270ec09c413300ea83e1e158b14b11a0d997bb9a433380ccf29136482bf86c4330ec3e40913ebcae35184b08251c5c723cec6369a5f17bec562b1e322675d7e8cde650919a33c3d5f9e5131ab1056744e4585140ce994cd2ae5a276a36b7818e0353a69e884336d6cbc4711c20bbe13c6d72f7f0f5bf5895fb7217c43d1cd8d29751a45d637bd517b0565bca0c2f16c79452be01d2a84ac44066d688802a80662d56c9abf6fb8ce6446f14597b21fae14159ad76955a065a5b097c3b19701f208dab6ce12f9847b432bc4a3080b310846cf3b1d12bc85c564821e15cca09fa5542638a2d91c7262306029e9c6c95e9c24bde4203ee8f76a1e818792a9654a067bfd380e5e2d052d5846b2ba8f5332a55c437034b97636b063f1f594c43b713cb06d2345ae83776043b2c13e58b1278845493ba7d08d7ba619b6151132077ca5b26ff4a224769f75d11908c0eade101e3c0a4b6dfef9eb6f74808a1c474bc62b14d3ec4f8b20eac607fbc96e97dc2e0de8e00a8a12430d04135b15e8d967e44ed86c0eda106754dbc6caa134738c5dd48f83e38712907a0f3842ecf026532c2fd77e1e5c6cc1059dce2a252ec708cc997a34ea8255a788fcfce38b42bfc09c73fdc27898bf04680783f823c18ffd2526ee93900ee9188963bef5c825bd07eb7f032a73795d30332777b02438bf4a474a598e8b639e269df8f9af8f7f888d9e058413af28378ac43115d8ac216c96932420f665b7a0fab8ad9ad23e63e24e87439ae21efb84bc047947e8c94c2a069b8c5391b38c1aa9da8cd8ee3e6638340bf0206dcd68fcbe679fdb78c629f9a0b5e9dd16fd346f71f6edf3055a6c4b0f90f89a71b804aab2f9456953dae65b478f7defaf10ecda85dd43905fba12872c4dd08dfd5efa3fae016f74b7ff9f8cdab9ed2dec21ac6f9db38d8783af03f30553d159b6a9d875e583a9b0c69e2a3a1c8297f5aa0e87b7693cf43a2778863cc1b2f5f356beb167935aae514ff0d238c57e6cd9b765722ef38ac36671d4d4cb4cb1d2b479bd479e59aeab59d66fbaceea7baa368bb7be0b4fa46c3b88c5567ca04ad4996f53bd5f8e9aa41f19fa4111ef4707dac88cc33df055b1a4a1ff8e8fa561d7fe8f5eb8bbcac76be30af2ed27aae21694574bc2da1413393cb4698867aa64616c2fb7faf8a6e9631b5e3b6de5748a65ec40edf7ea07a8c8e6526d80589d77c34f4db31ee341e65dbe927760fdbe75aeb91298285982326b73c76a5d5d1c9d5c9d9f59f308a1818243c7cfbe66a8ad8fc0b0318beac782de728ba4f55a4dbbb8b83e6deaa78b9e3c6b9ff7cfecc4838789e42c5bb69eefc55b822fdd410ff9d610ea0eb664ed4872fbe41535f451f209ab67f62678e7f64d23eb8a2339b069475ebd8b3a194a63347c66dd96b7bf77e375b105f6cb86dc41e81d6fcb95a55ff776813b5fba756db2b4e76a117fea653ef41eae6baf2e806dfdc1b67eafb7a18ff7417d1cf8dbc0aefc3523b137e26f0067a4bb6ea4d9c8cdddf0253636c3b0dafbee9658d3ee7aed7eed417f4bb1be379a3bc39d194f3e9fd81878131bc9c7a3ea1e911f61f1ddfd41b33b6ca955a56e97ca6b4e679bc3e8ba5d906f877537bd07a5dd28753590ececedf4572de54ecb2b5f219f69a96e2377ec2ed0da70b2d750dff9a3e334f7c3ff5f, '2016-01-14 19:09:43'),
+('mw:pcache:idoptions:1', 0x458dc10ac2301044ff653fa0eca6313493a378e8a920eabdd88039544b574429fd7713a1781bde1b663a78d0bebfdee2298d91b0c3a210031acf1a876e7aa6c75d29f4602caba2c9e21267cd9482e63649e52a5bb27076ffa5422cc8b03816a9c5b3b7f58f9aad77784f69fe5048689c652ece6dee185fa9bcb443f112d62f, '2016-01-14 19:09:43');
 
 -- --------------------------------------------------------
 
@@ -594,7 +585,7 @@ CREATE TABLE IF NOT EXISTS `page` (
 --
 
 INSERT INTO `page` (`page_id`, `page_namespace`, `page_title`, `page_restrictions`, `page_is_redirect`, `page_is_new`, `page_random`, `page_touched`, `page_links_updated`, `page_latest`, `page_len`, `page_content_model`, `page_lang`) VALUES
-(1, 0, 'Main_Page', '', 0, 1, 0.681223696424, '20151002172845', '20151002172845', 1, 592, 'wikitext', NULL);
+(1, 0, 'Main_Page', '', 0, 1, 0.264227248773, '20160113190943', '20160113190943', 1, 592, 'wikitext', NULL);
 
 -- --------------------------------------------------------
 
@@ -609,7 +600,7 @@ CREATE TABLE IF NOT EXISTS `pagelinks` (
   `pl_title` varbinary(255) NOT NULL DEFAULT '',
   UNIQUE KEY `pl_from` (`pl_from`,`pl_namespace`,`pl_title`),
   KEY `pl_namespace` (`pl_namespace`,`pl_title`,`pl_from`),
-  KEY `pl_backlinks_namespace` (`pl_namespace`,`pl_title`,`pl_from_namespace`,`pl_from`)
+  KEY `pl_backlinks_namespace` (`pl_from_namespace`,`pl_namespace`,`pl_title`,`pl_from`)
 ) ENGINE=InnoDB DEFAULT CHARSET=binary;
 
 -- --------------------------------------------------------
@@ -757,7 +748,7 @@ CREATE TABLE IF NOT EXISTS `recentchanges` (
 --
 
 INSERT INTO `recentchanges` (`rc_id`, `rc_timestamp`, `rc_user`, `rc_user_text`, `rc_namespace`, `rc_title`, `rc_comment`, `rc_minor`, `rc_bot`, `rc_new`, `rc_cur_id`, `rc_this_oldid`, `rc_last_oldid`, `rc_type`, `rc_source`, `rc_patrolled`, `rc_ip`, `rc_old_len`, `rc_new_len`, `rc_deleted`, `rc_logid`, `rc_log_type`, `rc_log_action`, `rc_params`) VALUES
-(1, '20151002172845', 0, 'MediaWiki default', 0, 'Main_Page', '', 0, 0, 1, 1, 1, 0, 1, 'mw.new', 0, '127.0.0.1', 0, 592, 0, 0, NULL, '', '');
+(1, '20160113190943', 0, 'MediaWiki default', 0, 'Main_Page', '', 0, 0, 1, 1, 1, 0, 1, 'mw.new', 0, '127.0.0.1', 0, 592, 0, 0, NULL, '', '');
 
 -- --------------------------------------------------------
 
@@ -810,7 +801,7 @@ CREATE TABLE IF NOT EXISTS `revision` (
 --
 
 INSERT INTO `revision` (`rev_id`, `rev_page`, `rev_text_id`, `rev_comment`, `rev_user`, `rev_user_text`, `rev_timestamp`, `rev_minor_edit`, `rev_deleted`, `rev_len`, `rev_parent_id`, `rev_sha1`, `rev_content_model`, `rev_content_format`) VALUES
-(1, 1, 1, '', 0, 'MediaWiki default', '20151002172845', 0, 0, 592, 0, 'glba3g2evzm40dqnqxegze66eqibkvb', NULL, NULL);
+(1, 1, 1, '', 0, 'MediaWiki default', '20160113190943', 0, 0, 592, 0, 'glba3g2evzm40dqnqxegze66eqibkvb', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -931,7 +922,7 @@ CREATE TABLE IF NOT EXISTS `templatelinks` (
   `tl_title` varbinary(255) NOT NULL DEFAULT '',
   UNIQUE KEY `tl_from` (`tl_from`,`tl_namespace`,`tl_title`),
   KEY `tl_namespace` (`tl_namespace`,`tl_title`,`tl_from`),
-  KEY `tl_backlinks_namespace` (`tl_namespace`,`tl_title`,`tl_from_namespace`,`tl_from`)
+  KEY `tl_backlinks_namespace` (`tl_from_namespace`,`tl_namespace`,`tl_title`,`tl_from`)
 ) ENGINE=InnoDB DEFAULT CHARSET=binary;
 
 -- --------------------------------------------------------
@@ -987,7 +978,7 @@ INSERT INTO `updatelog` (`ul_key`, `ul_value`) VALUES
 ('filearchive-fa_major_mime-patch-fa_major_mime-chemical.sql', NULL),
 ('image-img_major_mime-patch-img_major_mime-chemical.sql', NULL),
 ('oldimage-oi_major_mime-patch-oi_major_mime-chemical.sql', NULL),
-('updatelist-1.25.2-14438069260', 0x613a303a7b7d),
+('updatelist-1.26.2-14527121840', 0x613a303a7b7d),
 ('user_former_groups-ufg_group-patch-ufg_group-length-increase-255.sql', NULL),
 ('user_groups-ug_group-patch-ug_group-length-increase-255.sql', NULL),
 ('user_properties-up_property-patch-up_property.sql', NULL);
@@ -1055,7 +1046,7 @@ CREATE TABLE IF NOT EXISTS `user` (
 --
 
 INSERT INTO `user` (`user_id`, `user_name`, `user_real_name`, `user_password`, `user_newpassword`, `user_newpass_time`, `user_email`, `user_touched`, `user_token`, `user_email_authenticated`, `user_email_token`, `user_email_token_expires`, `user_registration`, `user_editcount`, `user_password_expires`) VALUES
-(1, 'Admin', '', 0x3a70626b6466323a7368613235363a31303030303a3132383a363852324f42742b71686e616e6752504475723474673d3d3a66326b635854566c7650764f306c764e2b6161335671727367374e785934365974466c6d6b305869785867546c7672726f6373555448384b36514962416275556a515776417870526643696d494f695754797931426e364875514f4b792f6f746131324d67332b50767a4f6f56584f367668677542576e445a326a46466c676f4373414c74502b7469685344487557357a4141326a5967596e597142385144733351597066356c697267593d, '', NULL, 0x6578616d706c65406578616d706c652e636f6d, '20151002172849', '12c6a4762b329cdafa0bc75064a6ea01', NULL, NULL, NULL, '20151002172843', 0, NULL);
+(1, 'Mediawiki', '', 0x3a70626b6466323a7368613235363a31303030303a3132383a566d3243737250686653774970317774714854744b413d3d3a2f786b537873685a667a704c54742b6a316e5051694e663967594962726e6d65624d76326c564578536f536c6e75727a427049446f4a646b2b58364844756d326d5236354a384f4a2b49683138436362385a71486b507546454f64436532626b346a7243634e466f6b7a504174714e665a7741384d4551384d6a4e5150624275576f424e736f6364304f3177677931614f515478572b5a4d4c4130643850413837662b773750426a5963493d, '', NULL, '', '20160113190947', '7b71de6eb1004c531786c82f9ef786cb', NULL, '\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0', NULL, '20160113190941', 0, NULL);
 
 -- --------------------------------------------------------
 

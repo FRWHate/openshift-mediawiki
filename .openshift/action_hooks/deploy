@@ -6,8 +6,8 @@
 
 set -e
 
-base_version=1.25
-version=1.25.2
+base_version=1.26
+version=1.26.2
 
 if [ -z $OPENSHIFT_MYSQL_DB_HOST ]
 then
